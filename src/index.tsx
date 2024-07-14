@@ -2,18 +2,17 @@ import { Hono } from 'hono'
 import { html } from 'hono/html'
 import { CharacterInfo } from './types';
 import {Top} from './top'
+import { D1QB } from "workers-qb";
 const app = new Hono()
 
-
-// 配列の定義
-const CharacterInfoArray: CharacterInfo[] = [];
-
-// 値を追加する
-CharacterInfoArray.push({ name: "リュウ", filePath: "/static/icon/iconA01.png" });
-CharacterInfoArray.push({ name: "ルーク", filePath: "/static/icon/iconA02.png" });
-CharacterInfoArray.push({ name: "ジェイミー", filePath: "/static/icon/iconA03.png" });
-app.get('/', (c) => {
-  return c.html(<Top characterArray={CharacterInfoArray} />)
+app.get('/', async (c) => {
+  const qb = new D1QB(c.env.DB);
+  const characterInfo = await qb
+  .fetchAll<CharacterInfo>({
+    tableName: 'CharacterInfo',
+  })
+  .execute()
+  return c.html(<Top characterArray={characterInfo.results} />)
 })
 
 export default app

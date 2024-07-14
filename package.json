@@ -8,12 +8,14 @@
     "build:watch": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js --watch"
   },
   "dependencies": {
-    "hono": "^3.3.1"
+    "hono": "^3.3.1",
+    "workers-qb": "^1.3.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230628.0",
     "concurrently": "^8.2.0",
     "esbuild": "^0.18.13",
+    "miniflare": "^3.20240701.0",
     "wrangler": "^3.1.2"
   }
 }

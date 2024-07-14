@@ -1,0 +1,4 @@
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "sf6-local-fight-result"
+database_id = "9e60a864-34d8-4eba-9018-f7a32cc2c90f"
