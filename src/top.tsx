@@ -10,6 +10,19 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>ストリートファイター6 勝敗登録</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+          /* カスタムCSS */
+          select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f3f4f6;
+          }
+          select:not(:disabled) {
+            opacity: 1;
+            cursor: pointer;
+            background-color: white;
+          }
+        </style>
       </head>
       <body class="bg-gray-100">
         <div class="container mx-auto p-4">
@@ -18,125 +31,176 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
               ストリートファイター6 勝敗登録
             </h1>
             <form id="resultForm" class="space-y-4">
+              <!-- 自キャラの位置選択 -->
               <div>
-                <label
-                  for="myCharacter"
-                  class="block text-sm font-medium text-gray-700"
-                  >自分のキャラクター:</label
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >自キャラの位置:</label
                 >
-                <div class="mt-1 flex rounded-md shadow-sm">
-                  <div class="flex-shrink-0">
-                    <svg
-                      id="myCharacterPlaceholder"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6"
-                      style="margin-top: 6pt;"
+                <div class="flex space-x-4">
+                  <label class="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="playerSide"
+                      value="1P"
+                      class="form-radio"
+                      checked
+                    />
+                    <span class="ml-2">1P側</span>
+                  </label>
+                  <label class="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="playerSide"
+                      value="2P"
+                      class="form-radio"
+                    />
+                    <span class="ml-2">2P側</span>
+                  </label>
+                </div>
+              </div>
+              <!-- 1P サイド -->
+              <div id="1pSide" class="bg-blue-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold text-blue-800 mb-3">
+                  1P サイド
+                </h2>
+                <div class="space-y-4">
+                  <div>
+                    <label
+                      for="player1Character"
+                      class="block text-sm font-medium text-gray-700"
+                      >キャラクター:</label
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                      <div class="flex-shrink-0">
+                        <svg
+                          id="player1CharacterPlaceholder"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-6"
+                          style="margin-top: 6pt;"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                          />
+                        </svg>
+
+                        <img
+                          id="player1CharacterIcon"
+                          src=""
+                          alt="キャラクターアイコン"
+                          class="w-10 h-10 rounded-l-md hidden"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        id="player1Character"
+                        name="player1Character"
+                        readonly
+                        required
+                        class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       />
-                    </svg>
-                    <img
-                      id="myCharacterIcon"
-                      src=""
-                      alt="キャラクターアイコン"
-                      class="w-10 h-10 rounded-l-md hidden"
+                      <button
+                        type="button"
+                        onclick="openModal('player1Character')"
+                        class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 text-sm"
+                      >
+                        選択
+                      </button>
+                    </div>
+                  </div>
+                  <div id="player1NameContainer" class="hidden">
+                    <label
+                      for="player1Name"
+                      class="block text-sm font-medium text-gray-700"
+                      >対戦相手のプレイヤー名:</label
+                    >
+                    <input
+                      type="text"
+                      id="player1Name"
+                      name="player1Name"
+                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
-                  <input
-                    type="text"
-                    id="myCharacter"
-                    name="myCharacter"
-                    readonly
-                    required
-                    class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                  <button
-                    type="button"
-                    onclick="openModal('myCharacter')"
-                    class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 text-sm"
-                  >
-                    選択
-                  </button>
                 </div>
               </div>
 
-              <div>
-                <label
-                  for="opponent"
-                  class="block text-sm font-medium text-gray-700"
-                  >対戦相手:</label
-                >
-                <input
-                  type="text"
-                  id="opponent"
-                  name="opponent"
-                  list="opponentList"
-                  required
-                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-                <datalist id="opponentList">
-                  <option value="プレイヤー1"></option>
-                  <option value="プレイヤー2"></option>
-                  <option value="プレイヤー3"></option>
-                </datalist>
-              </div>
-
-              <div>
-                <label
-                  for="opponentCharacter"
-                  class="block text-sm font-medium text-gray-700"
-                  >対戦相手のキャラクター:</label
-                >
-                <div class="mt-1 flex rounded-md shadow-sm">
-                  <div class="flex-shrink-0">
-                    <svg
-                      id="opponentCharacterPlaceholder"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6"
-                      style="margin-top: 6pt;"
+              <!-- 2P サイド -->
+              <div id="2pSide" class="bg-red-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold text-red-800 mb-3">
+                  2P サイド
+                </h2>
+                <div class="space-y-4">
+                  <div>
+                    <label
+                      for="player2Character"
+                      class="block text-sm font-medium text-gray-700"
+                      >キャラクター:</label
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                      <div class="flex-shrink-0">
+                        <svg
+                          id="player2CharacterPlaceholder"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-6"
+                          style="margin-top: 6pt;"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                          />
+                        </svg>
+
+                        <img
+                          id="player2CharacterIcon"
+                          src=""
+                          alt="キャラクターアイコン"
+                          class="w-10 h-10 rounded-l-md hidden"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        id="player2Character"
+                        name="player2Character"
+                        readonly
+                        required
+                        class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       />
-                    </svg>
-                    <img
-                      id="opponentCharacterIcon"
-                      src=""
-                      alt="キャラクターアイコン"
-                      class="w-10 h-10 rounded-l-md hidden"
+                      <button
+                        type="button"
+                        onclick="openModal('player2Character')"
+                        class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 text-sm"
+                      >
+                        選択
+                      </button>
+                    </div>
+                  </div>
+                  <div id="player2NameContainer" class="hidden">
+                    <label
+                      for="player2Name"
+                      class="block text-sm font-medium text-gray-700"
+                      >対戦相手のプレイヤー名:</label
+                    >
+                    <input
+                      type="text"
+                      id="player2Name"
+                      name="player2Name"
+                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
-                  <input
-                    type="text"
-                    id="opponentCharacter"
-                    name="opponentCharacter"
-                    readonly
-                    required
-                    class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-l-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                  <button
-                    type="button"
-                    onclick="openModal('opponentCharacter')"
-                    class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 text-sm"
-                  >
-                    選択
-                  </button>
                 </div>
               </div>
 
+              <!-- ラウンド結果 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700"
                   >ラウンド結果:</label
@@ -146,7 +210,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                     id="round1"
                     name="round1"
                     required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
                   >
                     <option value="">1R</option>
                     <option value="win">勝ち</option>
@@ -156,7 +220,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                     id="round2"
                     name="round2"
                     required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
                   >
                     <option value="">2R</option>
                     <option value="win">勝ち</option>
@@ -165,12 +229,12 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                   <select
                     id="round3"
                     name="round3"
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
+                    disabled
                   >
                     <option value="">3R</option>
                     <option value="win">勝ち</option>
                     <option value="lose">負け</option>
-                    <option value="not_played">未実施</option>
                   </select>
                 </div>
               </div>
@@ -181,12 +245,12 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                   class="block text-sm font-medium text-gray-700"
                   >メモ:</label
                 >
-                <input
-                  type="text"
+                <textarea
                   id="notes"
                   name="notes"
+                  rows="3"
                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+                ></textarea>
               </div>
 
               <button
@@ -211,7 +275,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                 キャラクター選択
               </h3>
               <div class="grid grid-cols-5 gap-4 mt-2 px-4 py-3">
-                ${props.characterArray?.map(item => 
+                ${props.characterArray?.map((item) => (
                   <button
                     onclick={`selectCharacter('${item.name}', '${item.filePath}')`}
                     class="character-icon"
@@ -223,7 +287,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                     />
                     <span class="text-sm">{item.name}</span>
                   </button>
-                )}
+                ))}
               </div>
             </div>
           </div>
@@ -254,10 +318,17 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
             closeModal();
           }
 
+          // フォーム送信時の処理
           document.getElementById("resultForm").onsubmit = function (e) {
             e.preventDefault();
             // ここに送信処理を追加
             console.log("フォームが送信されました");
+
+            // フォームデータの収集
+            const formData = new FormData(this);
+            for (let [key, value] of formData.entries()) {
+              console.log(key, value);
+            }
           };
 
           window.onclick = function (event) {
@@ -265,6 +336,76 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
               closeModal();
             }
           };
+          // 自キャラの位置に応じてUIを更新する関数
+          function updatePlayerSide() {
+            const playerSide = document.querySelector(
+              'input[name="playerSide"]:checked'
+            ).value;
+            const player1Side = document.getElementById("1pSide");
+            const player2Side = document.getElementById("2pSide");
+            const player1NameContainer = document.getElementById(
+              "player1NameContainer"
+            );
+            const player2NameContainer = document.getElementById(
+              "player2NameContainer"
+            );
+
+            if (playerSide === "1P") {
+              player1Side.classList.add("bg-blue-100");
+              player1Side.classList.remove("bg-red-100");
+              player2Side.classList.remove("bg-blue-100");
+              player2Side.classList.add("bg-red-100");
+              player1NameContainer.classList.add("hidden");
+              player2NameContainer.classList.remove("hidden");
+            } else {
+              player2Side.classList.add("bg-blue-100");
+              player2Side.classList.remove("bg-red-100");
+              player1Side.classList.remove("bg-blue-100");
+              player1Side.classList.add("bg-red-100");
+              player1NameContainer.classList.remove("hidden");
+              player2NameContainer.classList.add("hidden");
+            }
+          }
+
+          // ラウンド結果の制御
+          function updateRoundResults() {
+            const round1 = document.getElementById("round1").value;
+            const round2 = document.getElementById("round2").value;
+            const round3 = document.getElementById("round3");
+
+            if (round1 && round2 && round1 !== round2) {
+              round3.disabled = false;
+              round3.required = true;
+              round3.classList.remove("bg-gray-100");
+              round3.classList.add("bg-white");
+            } else {
+              round3.disabled = true;
+              round3.required = false;
+              round3.value = "";
+              round3.value = "";
+              round3.classList.remove("bg-white");
+              round3.classList.add("bg-gray-100");
+            }
+          }
+
+          // ラジオボタンの変更を監視
+          document
+            .querySelectorAll('input[name="playerSide"]')
+            .forEach((radio) => {
+              radio.addEventListener("change", updatePlayerSide);
+            });
+
+          // ラウンド1と2の選択変更を監視
+          document
+            .getElementById("round1")
+            .addEventListener("change", updateRoundResults);
+          document
+            .getElementById("round2")
+            .addEventListener("change", updateRoundResults);
+
+          // 初期化時にも実行
+          updatePlayerSide();
+          updateRoundResults();
         </script>
       </body>
     </html>`;
