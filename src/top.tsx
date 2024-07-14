@@ -1,7 +1,7 @@
 import { html } from "hono/html";
 import { CharacterInfo } from "./types";
 
-export const Top = (props: { characterArray: CharacterInfo[] }) => {
+export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
   return html`<!DOCTYPE html>
     <!DOCTYPE html>
     <html lang="ja">
