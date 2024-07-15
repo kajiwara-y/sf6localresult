@@ -8,7 +8,9 @@
     "build:watch": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js --watch"
   },
   "dependencies": {
+    "@hono/oidc-auth": "^1.0.1",
     "hono": "^3.3.1",
+    "uuidv7": "^1.0.1",
     "workers-qb": "^1.3.0"
   },
   "devDependencies": {
