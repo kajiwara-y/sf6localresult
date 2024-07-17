@@ -16,12 +16,12 @@ CREATE TABLE if not exists PlayerMatches (
     player1_character_id INT,
     player2_character_id INT,
     winner_id TEXT,
-    match_date DATETIME,
+    match_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     round1_winner TEXT,
     round2_winner TEXT,
     round3_winner TEXT
 );
-CREATE TABLE PlayMatchMemo (
+CREATE TABLE if not exists PlayMatchMemo (
     memo_id TEXT PRIMARY KEY,
     memo_owner_id TEXT,
     memo TEXT
