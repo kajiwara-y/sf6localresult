@@ -1,21 +1,3 @@
-export type CharacterInfo = {
-  id: number;
-  name: string;
-  filePath: string;
-};
-
-
-export type UserInfo = {
-  user_id: string;
-  email: string;
-  nick_name: string;
-};
-
-export type UserName = {
-  nick_name: string;
-  user_id: string;
-};
-
 export type MatchInfo = {
   match_id: string;
   player1_id: string;
@@ -26,4 +8,5 @@ export type MatchInfo = {
   round1_winner: string;
   round2_winner: string;
   round3_winner: string | null;
+  match_date: string;
 };

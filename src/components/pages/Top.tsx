@@ -1,5 +1,5 @@
 import { html } from "hono/html";
-import { CharacterInfo , UserInfo,UserName} from "./types";
+import { CharacterInfo , UserInfo,UserName} from "../../types";
 import short from 'short-uuid'
 
 
