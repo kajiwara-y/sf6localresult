@@ -104,6 +104,11 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                         required
                         class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       />
+                      <input
+                        type="hidden"
+                        id="player1CharacterId"
+                        name="player1CharacterId"
+                      />
                       <button
                         type="button"
                         onclick="openModal('player1Character')"
@@ -174,6 +179,11 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
                         readonly
                         required
                         class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                      <input
+                        type="hidden"
+                        id="player2CharacterId"
+                        name="player2CharacterId"
                       />
                       <button
                         type="button"
@@ -277,7 +287,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
               <div class="grid grid-cols-5 gap-4 mt-2 px-4 py-3">
                 ${props.characterArray?.map((item) => (
                   <button
-                    onclick={`selectCharacter('${item.name}', '${item.filePath}')`}
+                    onclick={`selectCharacter('${item.id}','${item.name}', '${item.filePath}')`}
                     class="character-icon"
                   >
                     <img
@@ -306,8 +316,9 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
             modal.classList.add("hidden");
           }
 
-          function selectCharacter(characterName, iconSrc) {
+          function selectCharacter(characterId, characterName, iconSrc) {
             document.getElementById(currentField).value = characterName;
+            document.getElementById(currentField+ "Id").value = characterId;
             document.getElementById(currentField + "Icon").src = iconSrc;
             document
               .getElementById(currentField + "Icon")
