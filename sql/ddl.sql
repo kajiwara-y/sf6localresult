@@ -9,6 +9,7 @@ CREATE TABLE if not exists UserInfo (
     email TEXT,
     nick_name TEXT
 );
+DROP TABLE PlayerMatches;
 CREATE TABLE if not exists PlayerMatches (
     match_id TEXT PRIMARY KEY,
     player1_id TEXT,
