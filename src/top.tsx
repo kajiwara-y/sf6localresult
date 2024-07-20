@@ -7,6 +7,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
   const translator = short();
   const myid = translator.fromUUID(props.userInfo?.user_id as string)
   console.log(props.userNames)
+  const formattedNames = props.userNames?.map(user => `${user.nick_name}@${translator.fromUUID(user.user_id)}`);
   return html`<!DOCTYPE html>
     <!DOCTYPE html>
     <html lang="ja">
@@ -35,6 +36,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
               ストリートファイター6 勝敗登録
             </h1>
+            <p>${myid}</p>
             <form id="resultForm" class="space-y-4" action="/" method="POST">
               <input type="hidden" id="myId" name="myId" value=${props.userInfo?.user_id} />
               <!-- 自キャラの位置選択 -->
@@ -133,6 +135,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
                     <input
                       type="text"
                       id="player1Name"
+                      list="playerList"
                       name="player1Name"
                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -209,6 +212,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
                     <input
                       type="text"
                       id="player2Name"
+                      list="playerList"
                       name="player2Name"
                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -278,6 +282,11 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
             </form>
           </div>
         </div>
+        <datalist>
+          ${formattedNames?.map((item) => (
+            <option value={item}></option>
+          ))}
+        </datalist>
 
         <div
           id="characterModal"
@@ -337,7 +346,7 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
 
           // フォーム送信時の処理
           document.getElementById("resultForm").onsubmit = function (e) {
-            e.preventDefault();
+            // e.preventDefault();
             // ここに送信処理を追加
             console.log("フォームが送信されました");
 
