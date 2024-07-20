@@ -1,7 +1,12 @@
 import { html } from "hono/html";
-import { CharacterInfo } from "./types";
+import { CharacterInfo , UserInfo,UserName} from "./types";
+import short from 'short-uuid'
 
-export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
+
+export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userInfo: UserInfo | undefined, userNames: UserName[] | undefined}) => {
+  const translator = short();
+  const myid = translator.fromUUID(props.userInfo?.user_id as string)
+  console.log(props.userNames)
   return html`<!DOCTYPE html>
     <!DOCTYPE html>
     <html lang="ja">
@@ -30,7 +35,8 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined }) => {
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
               ストリートファイター6 勝敗登録
             </h1>
-            <form id="resultForm" class="space-y-4">
+            <form id="resultForm" class="space-y-4" action="/" method="POST">
+              <input type="hidden" id="myId" name="myId" value=${props.userInfo?.user_id} />
               <!-- 自キャラの位置選択 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
