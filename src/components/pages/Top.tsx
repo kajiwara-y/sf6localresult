@@ -341,7 +341,7 @@ export const Top = (props: {
 
           function selectCharacter(characterId, characterName, iconSrc) {
             document.getElementById(currentField).value = characterName;
-            document.getElementById(currentField+ "Id").value = characterId;
+            document.getElementById(currentField + "Id").value = characterId;
             document.getElementById(currentField + "Icon").src = iconSrc;
             document
               .getElementById(currentField + "Icon")
@@ -380,15 +380,48 @@ export const Top = (props: {
             const player1NameContainer = document.getElementById(
               "player1NameContainer"
             );
+            const player1Name = document.getElementById("player1Name");
             const player2NameContainer = document.getElementById(
               "player2NameContainer"
             );
+            const player2Name = document.getElementById("player2Name");
+
+            const player1Character =
+              document.getElementById("player1Character");
+            const player1CharacterId =
+              document.getElementById("player1CharacterId");
+            const player1CharacterIcon = document.getElementById(
+              "player1CharacterIcon"
+            );
+            const player2Character =
+              document.getElementById("player2Character");
+            const player2CharacterId =
+              document.getElementById("player2CharacterId");
+            const player2CharacterIcon = document.getElementById(
+              "player2CharacterIcon"
+            );
+            const pastPlayer1Character = player1Character.value;
+            const pastPlayer1CharacterId = player1CharacterId.value;
+            const pastPlayer1CharacterIcon = player1CharacterIcon.src;
+            const pastPlayer2Character = player2Character.value;
+            const pastPlayer2CharacterId = player2CharacterId.value;
+            const pastPlayer2CharacterIcon = player2CharacterIcon.src;
+            const pastPlayer1Name = player1Name.value;
+            const pastPlayer2Name = player2Name.value;
+            player1Character.value = pastPlayer2Character;
+            player1CharacterId.value = pastPlayer2CharacterId;
+            player1CharacterIcon.src = pastPlayer2CharacterIcon;
+            player2Character.value = pastPlayer1Character;
+            player2CharacterId.value = pastPlayer1CharacterId;
+            player2CharacterIcon.src = pastPlayer1CharacterIcon;
 
             if (playerSide === "1P") {
               player1Side.classList.add("bg-blue-100");
               player1Side.classList.remove("bg-red-100");
               player2Side.classList.remove("bg-blue-100");
               player2Side.classList.add("bg-red-100");
+              player1Name.value = "";
+              player2Name.value = pastPlayer1Name;
               player1NameContainer.classList.add("hidden");
               player2NameContainer.classList.remove("hidden");
             } else {
@@ -396,6 +429,8 @@ export const Top = (props: {
               player2Side.classList.remove("bg-red-100");
               player1Side.classList.remove("bg-blue-100");
               player1Side.classList.add("bg-red-100");
+              player1Name.value = pastPlayer2Name;
+              player2Name.value = "";
               player1NameContainer.classList.remove("hidden");
               player2NameContainer.classList.add("hidden");
             }
