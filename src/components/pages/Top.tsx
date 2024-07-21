@@ -292,10 +292,8 @@ export const Top = (props: {
             </form>
           </div>
         </div>
-        <datalist>
-          ${formattedNames?.map((item) => (
-            <option value={item}></option>
-          ))}
+        <datalist id="playerList" ]>
+          ${formattedNames?.map((item) => <option value={item}></option>)}
         </datalist>
 
         <div
