@@ -1,13 +1,18 @@
 import { html } from "hono/html";
-import { CharacterInfo , UserInfo,UserName} from "../../types";
-import short from 'short-uuid'
+import { CharacterInfo, UserInfo, UserName } from "../../types";
+import short from "short-uuid";
 
-
-export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userInfo: UserInfo | undefined, userNames: UserName[] | undefined}) => {
+export const Top = (props: {
+  characterArray: CharacterInfo[] | undefined;
+  userInfo: UserInfo | undefined;
+  userNames: UserName[] | undefined;
+}) => {
   const translator = short();
-  const myid = translator.fromUUID(props.userInfo?.user_id as string)
-  console.log(props.userNames)
-  const formattedNames = props.userNames?.map(user => `${user.nick_name}@${translator.fromUUID(user.user_id)}`);
+  const myid = translator.fromUUID(props.userInfo?.user_id as string);
+  console.log(props.userNames);
+  const formattedNames = props.userNames?.map(
+    (user) => `${user.nick_name}@${translator.fromUUID(user.user_id)}`
+  );
   return html`<!DOCTYPE html>
     <!DOCTYPE html>
     <html lang="ja">
@@ -38,7 +43,12 @@ export const Top = (props: { characterArray: CharacterInfo[] | undefined ,userIn
             </h1>
             <p>${myid}</p>
             <form id="resultForm" class="space-y-4" action="/" method="POST">
-              <input type="hidden" id="myId" name="myId" value=${props.userInfo?.user_id} />
+              <input
+                type="hidden"
+                id="myId"
+                name="myId"
+                value=${props.userInfo?.user_id}
+              />
               <!-- 自キャラの位置選択 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
