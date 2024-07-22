@@ -41,7 +41,7 @@ export const Top = (props: {
               ストリートファイター6 勝敗登録
             </h1>
             <p>${myid}</p>
-            <form id="resultForm" class="space-y-4" action="/" method="POST">
+            <form id="resultForm" name="resultForm" class="space-y-4" action="/" method="POST">
               <input
                 type="hidden"
                 id="myId"
@@ -455,6 +455,47 @@ export const Top = (props: {
               round3.classList.add("bg-gray-100");
             }
           }
+          function getCharacterInfo(characterId,side) {
+            fetch("/api/character?characterId=" + characterId)
+              .then((response) => response.json())
+              .then((data) => {
+                currentField = side
+                selectCharacter(data.id, data.name, data.filePath)
+              });
+          }
+          document.addEventListener("DOMContentLoaded", function () {
+            // URLからGETパラメータを取得する関数
+            function getParameterByName(name, url = window.location.href) {
+              name = name.replace(/[[]]/g, "\\$&");
+              var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+              if (!results) return null;
+              if (!results[2]) return "";
+              return decodeURIComponent(results[2].replace(/\\+/g, ' '));
+            }
+            //playerSide
+            const playerSide = getParameterByName("playerSide")
+            if(playerSide !== "1P")
+              document.resultForm.playerSide[1].checked = true;
+            //player1CharacterId
+            const player1CharacterId = getParameterByName("player1CharacterId")
+            if(player1CharacterId){
+              const OnePlayerCharacterInfo = getCharacterInfo(player1CharacterId, "player1Character")
+            }
+            //player2CharacterId
+            const player2CharacterId = getParameterByName("player2CharacterId")
+            if(player1CharacterId){
+              const OnePlayerCharacterInfo = getCharacterInfo(player2CharacterId, "player2Character")
+            }
+            //opponentName
+            const opponentName = getParameterByName("opponentName")
+            if(playerSide !== "1P"){
+              player1Name.value = opponentName;
+            }else{
+              player2Name.value = opponentName;
+            }
+
+          });
 
           // ラジオボタンの変更を監視
           document
