@@ -1,17 +1,6 @@
 import { Context } from "hono";
 import { D1QB, FetchTypes } from "workers-qb";
-import { CharacterInfo, UserInfo, UserName } from "../types";
-
-export const getCharacterInfo = async (c: Context) => {
-  const qb = new D1QB(c.env.DB as D1QB);
-  qb.setDebugger(true);
-  const result = await qb
-    .fetchAll<CharacterInfo>({
-      tableName: "CharacterInfo",
-    })
-    .execute();
-  return result.results;
-};
+import { UserInfo, UserName } from "../types";
 
 export const getUserInfo = async (c: Context, email: string | undefined) => {
   const qb = new D1QB(c.env.DB as D1QB);
