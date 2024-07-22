@@ -40,7 +40,6 @@ export const Top = (props: {
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
               ストリートファイター6 勝敗登録
             </h1>
-            <p>${myid}</p>
             <form id="resultForm" name="resultForm" class="space-y-4" action="/" method="POST">
               <input
                 type="hidden"
