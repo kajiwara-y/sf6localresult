@@ -14,7 +14,6 @@ export const Top = (props: {
     (user) => `${user.nick_name}@${translator.fromUUID(user.user_id)}`
   );
   return html`<!DOCTYPE html>
-    <!DOCTYPE html>
     <html lang="ja">
       <head>
         <meta charset="UTF-8" />
