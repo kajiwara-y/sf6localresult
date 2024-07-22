@@ -8,7 +8,7 @@ import short from 'short-uuid'
 export const matchSubmitPage = async (c: Context) => {
   const body = await c.req.parseBody()
   console.log(body)
-  const opponentName = (body.player1Name ?? body.player2Name) as string;
+  const opponentName = body.player1Name || body.player2Name as string;
   const parts = opponentName.split('@');
   const translator = short(); 
   let opponentId = null
@@ -21,7 +21,7 @@ export const matchSubmitPage = async (c: Context) => {
     }else{
       const userInfo:UserInfo = {
         user_id : uuidv7(),
-        nick_name: opponentName,
+        nick_name: opponentName as string,
         email: ""
       }
       createUser(c,userInfo)
@@ -30,16 +30,13 @@ export const matchSubmitPage = async (c: Context) => {
   }else{
     const userInfo:UserInfo = {
       user_id : uuidv7(),
-      nick_name: opponentName,
+      nick_name: opponentName as string,
       email: ""
     }
     createUser(c,userInfo)
     opponentId = userInfo.user_id
   }
 
-
-
-  
   const matchData: MatchSubmissionData = {
     playerSide: body['playerSide'] as string,
     myId: body.myId as string,
@@ -52,5 +49,14 @@ export const matchSubmitPage = async (c: Context) => {
   }
 
   await createMatch(c, matchData)
-  return c.redirect('/')
+  const urlParams = new URLSearchParams();
+  const redirectParamTargets = ["playerSide","player1CharacterId","player2CharacterId"]
+  for (const [key, value] of Object.entries(matchData)) {
+    if (redirectParamTargets.includes(key) && value !== undefined) {
+      urlParams.append(key, value.toString());
+    }
+  }
+  urlParams.append("opponentName",opponentName as string)
+
+  return c.redirect('/?' + urlParams)
 }
