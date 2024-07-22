@@ -1,3 +1,4 @@
+pages_build_output_dir = "page"
 [[d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "sf6-local-fight-result"
