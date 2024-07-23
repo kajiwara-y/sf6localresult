@@ -12,29 +12,56 @@ export const matchSubmitPage = async (c: Context) => {
   const parts = opponentName.split('@');
   const translator = short(); 
   let opponentId = null
+  const urlParams = new URLSearchParams();
   if (parts.length > 1) {
     const opponentIdShort = parts[1]
+    //UUIDの変換チェック
     if(translator.validate(opponentIdShort, true))
     {
+      //ユーザー存在チェック
       if(await existsUser(c, translator.toUUID(opponentIdShort)))
+      {
+        //ユーザーが存在している
         opponentId = translator.toUUID(opponentIdShort)
+        urlParams.append("opponentName",opponentName as string)
+      }
+      else
+      {
+        //ユーザーが存在していないので登録を実施
+        const userInfo:UserInfo = {
+          user_id : uuidv7(),
+          nick_name: parts[0] as string,
+          email: ""
+        }
+        //ユーザー登録を実施
+        createUser(c,userInfo)
+        opponentId = userInfo.user_id
+        urlParams.append("opponentName",parts[0] + "@" + translator.fromUUID(userInfo.user_id) as string)
+      }
     }else{
+      //変換失敗
+      //@を文字列として使っているケースを想定
       const userInfo:UserInfo = {
         user_id : uuidv7(),
         nick_name: opponentName as string,
         email: ""
       }
       createUser(c,userInfo)
+      //ユーザー登録を実施
       opponentId = userInfo.user_id
+      urlParams.append("opponentName",opponentName + "@" + translator.fromUUID(userInfo.user_id) as string)
     }
   }else{
+    //対戦相手未登録
     const userInfo:UserInfo = {
       user_id : uuidv7(),
       nick_name: opponentName as string,
       email: ""
     }
+    //ユーザー登録を実施
     createUser(c,userInfo)
     opponentId = userInfo.user_id
+    urlParams.append("opponentName",opponentName + "@" + translator.fromUUID(userInfo.user_id) as string)
   }
 
   const matchData: MatchSubmissionData = {
@@ -49,14 +76,12 @@ export const matchSubmitPage = async (c: Context) => {
   }
 
   await createMatch(c, matchData)
-  const urlParams = new URLSearchParams();
   const redirectParamTargets = ["playerSide","player1CharacterId","player2CharacterId"]
   for (const [key, value] of Object.entries(matchData)) {
     if (redirectParamTargets.includes(key) && value !== undefined) {
       urlParams.append(key, value.toString());
     }
   }
-  urlParams.append("opponentName",opponentName as string)
 
   return c.redirect('/?' + urlParams)
 }
