@@ -473,8 +473,10 @@ export const Top = (props: {
             }
             //playerSide
             const playerSide = getParameterByName("playerSide")
-            if(playerSide !== "1P")
+            if(playerSide && playerSide !== "1P"){
               document.resultForm.playerSide[1].checked = true;
+              updatePlayerSide()
+            }
             //player1CharacterId
             const player1CharacterId = getParameterByName("player1CharacterId")
             if(player1CharacterId){
