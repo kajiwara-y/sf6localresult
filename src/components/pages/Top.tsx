@@ -8,7 +8,6 @@ export const Top = (props: {
   userNames: UserName[] | undefined;
 }) => {
   const translator = short();
-  const myid = translator.fromUUID(props.userInfo?.user_id as string);
   console.log(props.userNames);
   const formattedNames = props.userNames?.map(
     (user) => `${user.nick_name}@${translator.fromUUID(user.user_id)}`
