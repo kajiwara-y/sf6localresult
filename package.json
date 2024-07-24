@@ -1,11 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "dev:pages": "wrangler pages dev --compatibility-date=2023-07-10 --live-reload ./pages",
-    "dev": "concurrently \"yarn dev:pages\" \"yarn build:watch\"",
-    "deploy": "yarn build && wrangler pages deploy ./pages",
+    "dev": "run-p dev:*",
+    "dev:pages": "wrangler pages dev pages --live-reload",
+    "dev:esbuild": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js --watch",
     "build": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js",
-    "build:watch": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js --watch"
+    "deploy": "wrangler pages publish pages"
   },
   "dependencies": {
     "@hono/oidc-auth": "^1.0.1",
