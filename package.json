@@ -5,7 +5,7 @@
     "dev:pages": "wrangler pages dev pages --live-reload",
     "dev:esbuild": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js --watch",
     "build": "esbuild --bundle _worker.ts --format=esm --outfile=pages/_worker.js",
-    "deploy": "wrangler pages deploy pages"
+    "deploy": "npm run build && wrangler pages deploy pages"
   },
   "dependencies": {
     "@hono/oidc-auth": "^1.0.1",
