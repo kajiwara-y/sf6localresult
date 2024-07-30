@@ -5,4 +5,9 @@ compatibility_date = "2024-07-22"
 [[env.production.d1_databases]]
 database_id = "9e60a864-34d8-4eba-9018-f7a32cc2c90f"
 binding = "DB"
-database_name = "DB"
+database_name = "sf6-local-fight-result"
+
+[[d1_databases]]
+database_id = "9e60a864-34d8-4eba-9018-f7a32cc2c90f"
+binding = "DB"
+database_name = "sf6-local-fight-result"
