@@ -28,7 +28,7 @@ export const existsUser = async (c: Context, userId: string | undefined) => {
     },
   })
   .execute()
-  const answer = typeof(result.results) === "undefined" ? false : result.results[0] > 0
+  const answer = typeof(result.results) === "undefined" ? false : result.results.count as number > 0
   return answer
 };
 

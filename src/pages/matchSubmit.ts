@@ -16,7 +16,7 @@ export const matchSubmitPage = async (c: Context) => {
   if (parts.length > 1) {
     const opponentIdShort = parts[1]
     //UUIDの変換チェック
-    if(translator.validate(opponentIdShort, true))
+    if(translator.validate(opponentIdShort))
     {
       //ユーザー存在チェック
       if(await existsUser(c, translator.toUUID(opponentIdShort)))
