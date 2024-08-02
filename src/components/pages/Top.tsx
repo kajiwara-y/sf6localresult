@@ -361,7 +361,7 @@ export const Top = (props: {
         </div>
 
         <script>
-          let init = true
+          let init = true;
           let currentField;
           const modal = document.getElementById("characterModal");
           const player1Side = document.getElementById("1pSide");
@@ -375,8 +375,7 @@ export const Top = (props: {
           );
           const player2Name = document.getElementById("player2Name");
 
-          const player1Character =
-            document.getElementById("player1Character");
+          const player1Character = document.getElementById("player1Character");
           const player1CharacterId =
             document.getElementById("player1CharacterId");
           const player1CharacterIcon = document.getElementById(
@@ -385,8 +384,7 @@ export const Top = (props: {
           const player1CharacterPlaceholder = document.getElementById(
             "player1CharacterPlaceholder"
           );
-          const player2Character =
-            document.getElementById("player2Character");
+          const player2Character = document.getElementById("player2Character");
           const player2CharacterId =
             document.getElementById("player2CharacterId");
           const player2CharacterIcon = document.getElementById(
@@ -438,7 +436,7 @@ export const Top = (props: {
           };
           // 自キャラの位置に応じてUIを更新する関数
           function updatePlayerSide() {
-            console.log("Fire")
+            console.log("Fire");
             const playerSide = document.querySelector(
               'input[name="playerSide"]:checked'
             ).value;
@@ -454,27 +452,27 @@ export const Top = (props: {
             player1CharacterId.value = pastPlayer2CharacterId;
             player2Character.value = pastPlayer1Character;
             player2CharacterId.value = pastPlayer1CharacterId;
-            let changedPayer1SideUnselect = false
-            if(pastPlayer1CharacterId == ""){
+            let changedPayer1SideUnselect = false;
+            if (pastPlayer1CharacterId == "") {
               //プレイヤー1が未選択
               player2CharacterIcon.classList.add("hidden");
-              if(!init){
+              if (!init) {
                 //非初期化
                 player2CharacterPlaceholder.classList.remove("hidden");
               }
-            }else{
+            } else {
               //プレイヤー1が選択
               player2CharacterIcon.src = pastPlayer1CharacterIcon;
               player2CharacterPlaceholder.classList.add("hidden");
               player2CharacterIcon.classList.remove("hidden");
             }
-            if(pastPlayer2CharacterId == ""){
+            if (pastPlayer2CharacterId == "") {
               //プレイヤー2が未選択
               player1CharacterIcon.classList.add("hidden");
-              if(!init){
+              if (!init) {
                 player1CharacterPlaceholder.classList.remove("hidden");
               }
-            }else{
+            } else {
               //プレイヤー2が選択
               player1CharacterIcon.src = pastPlayer2CharacterIcon;
               player1CharacterPlaceholder.classList.add("hidden");
@@ -522,12 +520,12 @@ export const Top = (props: {
               round3.classList.add("bg-gray-100");
             }
           }
-          function getCharacterInfo(characterId,side) {
+          function getCharacterInfo(characterId, side) {
             fetch("/api/character?characterId=" + characterId)
               .then((response) => response.json())
               .then((data) => {
-                currentField = side
-                selectCharacter(data.id, data.name, data.filePath)
+                currentField = side;
+                selectCharacter(data.id, data.name, data.filePath);
               });
           }
           document.addEventListener("DOMContentLoaded", function () {
@@ -538,32 +536,37 @@ export const Top = (props: {
                 results = regex.exec(url);
               if (!results) return null;
               if (!results[2]) return "";
-              return decodeURIComponent(results[2].replace(/\\+/g, ' '));
+              return decodeURIComponent(results[2].replace(/\\+/g, " "));
             }
             //playerSide
-            const playerSide = getParameterByName("playerSide")
-            if(playerSide && playerSide !== "1P"){
+            const playerSide = getParameterByName("playerSide");
+            if (playerSide && playerSide !== "1P") {
               document.resultForm.playerSide[1].checked = true;
-              updatePlayerSide()
+              updatePlayerSide();
             }
             //player1CharacterId
-            const player1CharacterId = getParameterByName("player1CharacterId")
-            if(player1CharacterId){
-              const OnePlayerCharacterInfo = getCharacterInfo(player1CharacterId, "player1Character")
+            const player1CharacterId = getParameterByName("player1CharacterId");
+            if (player1CharacterId) {
+              const OnePlayerCharacterInfo = getCharacterInfo(
+                player1CharacterId,
+                "player1Character"
+              );
             }
             //player2CharacterId
-            const player2CharacterId = getParameterByName("player2CharacterId")
-            if(player1CharacterId){
-              const OnePlayerCharacterInfo = getCharacterInfo(player2CharacterId, "player2Character")
+            const player2CharacterId = getParameterByName("player2CharacterId");
+            if (player1CharacterId) {
+              const OnePlayerCharacterInfo = getCharacterInfo(
+                player2CharacterId,
+                "player2Character"
+              );
             }
             //opponentName
-            const opponentName = getParameterByName("opponentName")
-            if(playerSide !== "1P"){
+            const opponentName = getParameterByName("opponentName");
+            if (playerSide !== "1P") {
               player1Name.value = opponentName;
-            }else{
+            } else {
               player2Name.value = opponentName;
             }
-
           });
 
           // ラジオボタンの変更を監視
@@ -584,7 +587,7 @@ export const Top = (props: {
           // 初期化時にも実行
           updatePlayerSide();
           updateRoundResults();
-          init = false
+          init = false;
         </script>
       </body>
     </html>`;
