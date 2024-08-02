@@ -305,7 +305,7 @@ export const Top = (props: {
               <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
                 キャラクター選択
               </h3>
-              <div class="grid grid-cols-5 gap-4 mt-2 px-4 py-3">
+              <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-2 px-4 py-3">
                 ${props.characterArray?.map((item) => (
                   <button
                     onclick={`selectCharacter('${item.id}','${item.name}', '${item.filePath}')`}
