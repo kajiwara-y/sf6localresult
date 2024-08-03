@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { indexPage } from './pages'
+import { resultPage } from './pages/result'
 import { matchSubmitPage } from './pages/matchSubmit'
 import { getCharacterInfo } from './api/character'
 import { oidcAuthMiddleware, getAuth, revokeSession } from '@hono/oidc-auth';
@@ -20,5 +21,6 @@ app.use('*', async (c, next) => {
 })
 app.get('/', indexPage)
 app.post('/', matchSubmitPage)
+app.get('/battle-history', resultPage)
 app.get('/api/character', getCharacterInfo)
 export default app

@@ -1,7 +1,7 @@
 import { Context } from 'hono'
-import { D1QB } from 'workers-qb'
+import { D1QB, FetchTypes } from 'workers-qb'
 import { uuidv7 } from 'uuidv7'
-import { MatchInfo, MatchSubmissionData } from '../types'
+import { MatchInfo, MatchSubmissionData, MatchResult } from '../types'
 import { getWinnerId } from '../utils/match'
 
 export const createMatch = async (c: Context, data: MatchSubmissionData) => {
@@ -29,3 +29,35 @@ export const createMatch = async (c: Context, data: MatchSubmissionData) => {
 
   console.log(matchInfo)
 }
+
+export const getMatchResult = async (c: Context, userId: string | undefined) => {
+  const qb = new D1QB(c.env.DB as D1QB);
+  qb.setDebugger(true);
+  const result = await qb
+  .raw<MatchResult>({
+    query: `
+      SELECT
+        pm.match_id,
+        pm.player1_id,
+        uc1.nick_name AS player1_nick_name,
+        pm.player2_id,
+        uc2.nick_name AS player2_nick_name,
+        pm.player1_character_id,
+        pm.player2_character_id,
+        pm.winner_id,
+        pm.match_date
+      FROM
+        PlayerMatches pm
+        JOIN UserInfo uc1 ON pm.player1_id = uc1.user_id
+        JOIN UserInfo uc2 ON pm.player2_id = uc2.user_id
+      WHERE
+        pm.player1_id = $1 OR pm.player2_id = $1
+      ORDER BY
+        pm.match_date DESC
+      LIMIT 10;`,
+      args: [userId as string],
+      fetchType: FetchTypes.ALL,
+    })
+    .execute();
+  return result.results;
+};
