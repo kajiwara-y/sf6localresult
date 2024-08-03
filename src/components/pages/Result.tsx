@@ -17,6 +17,10 @@ export const Result = (props: {
   const getGrayScale = (playerId :string, winnerId :string) =>{
     return playerId === winnerId ? " " : "grayscale"
   }
+  const convertJST = (datetime: string) =>{
+    const date = new Date(datetime)
+    return date.toLocaleString('ja-JP',{timeZone: 'Asia/Tokyo'})
+  }
   return html`<!DOCTYPE html>
     <html lang="ja">
       <head>
@@ -72,7 +76,7 @@ export const Result = (props: {
                 <hr class="border-t border-gray-200 my-2" />
 
                 <div class="text-right">
-                  <p class="text-xs text-gray-500">${item.match_date}</p>
+                  <p class="text-xs text-gray-500">{convertJST(item.match_date)}</p>
                 </div>
               </div>
             </div>
