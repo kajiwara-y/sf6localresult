@@ -16,7 +16,6 @@ export const getAllCharacters = async (c: Context) => {
 
 export const getCharacter = async (c: Context, characterId : number) => {
   const qb = new D1QB(c.env.DB as D1QB);
-  qb.setDebugger(true);
   const result = await qb
     .fetchOne<CharacterInfo>({
       tableName: "CharacterInfo",
