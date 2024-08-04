@@ -30,7 +30,7 @@ export const createMatch = async (c: Context, data: MatchSubmissionData) => {
   console.log(matchInfo)
 }
 
-export const getMatchResult = async (c: Context, userId: string | undefined) => {
+export const getMatchResult = async (c: Context, userId: string | undefined, itemPerPage:number, offset:number) => {
   const qb = new D1QB(c.env.DB as D1QB);
   qb.setDebugger(true);
   const result = await qb
@@ -54,10 +54,27 @@ export const getMatchResult = async (c: Context, userId: string | undefined) => 
         pm.player1_id = $1 OR pm.player2_id = $1
       ORDER BY
         pm.match_date DESC
-      LIMIT 10;`,
-      args: [userId as string],
+      LIMIT $2 OFFSET $3;`,
+      args: [userId as string,itemPerPage,offset],
       fetchType: FetchTypes.ALL,
     })
     .execute();
   return result.results;
+};
+
+
+export const getTotalMatchCount = async (c: Context, userId: string | undefined) => {
+  const qb = new D1QB(c.env.DB as D1QB);
+  qb.setDebugger(true);
+  const result = await qb
+  .fetchOne({
+    tableName: 'PlayerMatches',
+    fields: 'count(*) as count',
+    where: {
+      conditions: 'player1_id = ?1 or player2_id = ?1',
+      params: [userId as string],
+    },
+  })
+  .execute()
+  return result?.results?.count as number;
 };

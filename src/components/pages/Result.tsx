@@ -4,6 +4,8 @@ import { CharacterInfo, MatchResult} from "../../types"
 export const Result = (props: {
   characterArray: CharacterInfo[] | undefined;
   matchResultArray: MatchResult[] | undefined;
+  page: number;
+  totalPages: number;
 }) => {
   const getCharacter = (id : number) =>{
     return props.characterArray?.find((character) => character.id === id)
@@ -21,6 +23,10 @@ export const Result = (props: {
     const date = new Date(datetime)
     return date.toLocaleString('ja-JP',{timeZone: 'Asia/Tokyo'})
   }
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(props.totalPages / itemsPerPage);
+  const hasNextPage = props.page < totalPages;
+  console.log(hasNextPage)
   return html`<!DOCTYPE html>
     <html lang="ja">
       <head>
@@ -81,10 +87,28 @@ export const Result = (props: {
               </div>
             </div>
             ))}
-
-            </div>
+          </div>
+          <div class="mt-6 flex justify-center space-x-2">
+            <button id="prevPage" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50" ${props.page <= 1? 'disabled' : ''}>前へ</button>
+            <span id="currentPage" class="px-4 py-2 bg-blue-500 text-white rounded">${props.page}</span>
+            <button id="nextPage" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50" ${!hasNextPage? 'disabled' : ''}>次へ</button>
           </div>
         </div>
+        <script>
+          const currentPage=${props.page}
+          const loadMatchHistory = (page) => {
+            window.location.href = '/battle-history?page=' + page;
+          };
+          document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+              loadMatchHistory(currentPage - 1);
+            }
+          });
+          document.getElementById('nextPage').addEventListener('click', () => {
+            loadMatchHistory(currentPage + 1);
+          });
+
+        </script>
       </body>
     </html>`;
 };
