@@ -3,6 +3,7 @@ import { D1QB, FetchTypes } from 'workers-qb'
 import { uuidv7 } from 'uuidv7'
 import { MatchInfo, MatchSubmissionData, MatchResult } from '../types'
 import { getWinnerId } from '../utils/match'
+import { WinRate } from '../types/WinRate'
 
 export const createMatch = async (c: Context, data: MatchSubmissionData) => {
   const qb = new D1QB(c.env.DB as D1QB)
@@ -78,3 +79,45 @@ export const getTotalMatchCount = async (c: Context, userId: string | undefined)
   .execute()
   return result?.results?.count as number;
 };
+
+export const getWinRate = async (c: Context, userId: string | undefined) => {
+  const qb = new D1QB(c.env.DB as D1QB);
+  qb.setDebugger(true);
+  const result = await qb
+  .raw<WinRate>({
+    query: `
+      WITH CharacterMatches AS (
+        SELECT 
+          player1_character_id AS character_id,
+          CASE WHEN winner_id = player1_id THEN 1 ELSE 0 END AS is_win
+        FROM PlayerMatches
+        WHERE player1_id = $1
+        UNION ALL
+        SELECT 
+          player2_character_id AS character_id,
+          CASE WHEN winner_id = player2_id THEN 1 ELSE 0 END AS is_win
+        FROM PlayerMatches
+        WHERE player2_id = $1
+      )
+      SELECT 
+        c.id AS character_id,
+        c.name AS character_name,
+        c.filePath AS character_icon,
+        COUNT(*) AS total_matches,
+        SUM(cm.is_win) AS wins,
+        ROUND(CAST(SUM(cm.is_win) AS FLOAT) / COUNT(*) * 100, 2) AS win_rate
+      FROM 
+        CharacterMatches cm
+      JOIN 
+        CharacterInfo c ON cm.character_id = c.id
+      GROUP BY 
+        c.id, c.name, c.filePath
+      ORDER BY 
+        win_rate DESC, total_matches DESC;`,
+      args: [userId as string],
+      fetchType: FetchTypes.ALL,
+    })
+    .execute();
+  return result?.results;
+};
+

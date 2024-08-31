@@ -4,3 +4,4 @@ export { MatchSubmissionData } from "./MatchSubmissionData";
 export { UserInfo } from "./UserInfo";
 export { UserName } from "./UserName";
 export { MatchResult } from "./MatchResult";
+export { WinRate } from "./WinRate"
