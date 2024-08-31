@@ -39,6 +39,18 @@ export const Top = (props: {
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
               ストリートファイター6 勝敗登録
             </h1>
+              <!-- ナビゲーションボタン -->
+            <div class="mb-6 flex justify-center space-x-4">
+              <a href="/battle-history" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                対戦履歴
+              </a>
+              <a href="/win-rate" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                キャラクター別勝率
+              </a>
+              <a href="/character-matchcount" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                キャラクター別対戦数
+              </a>
+            </div>
             <form id="resultForm" name="resultForm" class="space-y-4" action="/" method="POST">
               <input
                 type="hidden"
