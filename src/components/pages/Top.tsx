@@ -41,7 +41,7 @@ export const Top = (props: {
             </h1>
               <!-- ナビゲーションボタン -->
             <div class="mb-6 flex justify-center space-x-4">
-              <a href="/battle-history" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+              <a href="/match-history" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                 対戦履歴
               </a>
               <a href="/win-rate" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">

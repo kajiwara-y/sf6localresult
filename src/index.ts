@@ -22,7 +22,7 @@ app.use('*', async (c, next) => {
 })
 app.get('/', indexPage)
 app.post('/', matchSubmitPage)
-app.get('/battle-history', resultPage)
+app.get('/match-history', resultPage)
 app.get('/win-rate', winRatePage)
 app.get('/api/character', getCharacterInfo)
 export default app
