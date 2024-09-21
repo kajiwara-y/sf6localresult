@@ -50,29 +50,32 @@ export const WinRate = (props: {
           <tbody class="text-gray-600 text-sm font-light">
             <!-- 各キャラクターの行（繰り返し） -->
             ${props.winRateArray?.map((item) => (
-            <tr class="border-b border-gray-200 hover:bg-gray-100">
-              <td class="py-3 px-6 text-left whitespace-nowrap">
-                <div class="flex items-center">
-                  <img
-                    src={item.character_icon}
-                    alt={item.character_name}
-                    class="w-10 h-10 rounded-full mr-3"
-                  />
-                  <span class="font-medium">{item.character_name}</span>
-                </div>
-              </td>
-              <td class="py-3 px-6 text-center">{item.total_matches}</td>
-              <td class="py-3 px-6 text-center">{item.wins}</td>
-              <td class="py-3 px-6 text-center">{item.win_rate}</td>
-              <td class="py-3 px-6">
-                <div class="flex items-center">
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div class="bg-blue-600 h-2.5 rounded-full" style={createWinRateStyle(item.win_rate)}></div>
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img
+                      src={item.character_icon}
+                      alt={item.character_name}
+                      class="w-10 h-10 rounded-full mr-3"
+                    />
+                    <span class="font-medium">{item.character_name}</span>
                   </div>
-                  <span class="ml-2">{item.win_rate}%</span>
-                </div>
-              </td>
-            </tr>
+                </td>
+                <td class="py-3 px-6 text-center">{item.total_matches}</td>
+                <td class="py-3 px-6 text-center">{item.wins}</td>
+                <td class="py-3 px-6 text-center">{item.win_rate}</td>
+                <td class="py-3 px-6">
+                  <div class="flex items-center">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        class="bg-blue-600 h-2.5 rounded-full"
+                        style={createWinRateStyle(item.win_rate)}
+                      ></div>
+                    </div>
+                    <span class="ml-2">{item.win_rate}%</span>
+                  </div>
+                </td>
+              </tr>
             ))}
             <!-- 他のキャラクターも同様に -->
           </tbody>

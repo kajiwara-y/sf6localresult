@@ -138,3 +138,37 @@ export const getWinRate = async (c: Context, userId: string | undefined) => {
   return result?.results;
 };
 
+export const getMostUseCharacter = async (
+  c: Context,
+  userId: string | undefined
+) => {
+  const qb = new D1QB(c.env.DB as D1QB);
+  qb.setDebugger(true);
+  const result = await qb
+    .raw<CharacterInfo>({
+      query: `
+        WITH MostUsedCharacter AS (
+            SELECT character_id, COUNT(*) as use_count
+            FROM (
+                SELECT player1_character_id as character_id
+                FROM PlayerMatches
+                WHERE player1_id = $1
+                UNION ALL
+                SELECT player2_character_id as character_id
+                FROM PlayerMatches
+                WHERE player2_id = $1
+            ) as combined_matches
+            GROUP BY character_id
+            ORDER BY use_count DESC
+            LIMIT 1
+        )
+        SELECT ci.id, ci.name, ci.filePath
+        FROM CharacterInfo ci
+        JOIN MostUsedCharacter muc ON ci.id = muc.character_id;
+      `,
+      args: [userId as string],
+      fetchType: FetchTypes.ALL,
+    })
+    .execute();
+  return result?.results;
+};
