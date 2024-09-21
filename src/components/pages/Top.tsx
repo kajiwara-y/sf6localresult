@@ -239,44 +239,21 @@ export const Top = (props: {
                 </div>
               </div>
 
-              <!-- ラウンド結果 -->
+              <input type="hidden" id="round1" name="round1" value="" />
+              <input type="hidden" id="round2" name="round2" value="" />
+              <input type="hidden" id="round3" name="round3" value="" />
+              
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >ラウンド結果:</label
-                >
-                <div class="mt-1 grid grid-cols-3 gap-4">
-                  <select
-                    id="round1"
-                    name="round1"
-                    required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
-                  >
-                    <option value="">1R</option>
-                    <option value="win">勝ち</option>
-                    <option value="lose">負け</option>
-                  </select>
-                  <select
-                    id="round2"
-                    name="round2"
-                    required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
-                  >
-                    <option value="">2R</option>
-                    <option value="win">勝ち</option>
-                    <option value="lose">負け</option>
-                  </select>
-                  <select
-                    id="round3"
-                    name="round3"
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-200"
-                    disabled
-                  >
-                    <option value="">3R</option>
-                    <option value="win">勝ち</option>
-                    <option value="lose">負け</option>
-                  </select>
+                <h2 class="text-lg font-semibold mb-2">対戦結果登録</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" data-result="win,win">勝 勝</button>
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" data-result="win,lose,win">勝 負 勝</button>
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" data-result="lose,win,win">負 勝 勝</button>
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" data-result="lose,lose">負 負</button>
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" data-result="lose,win,lose">負 勝 負</button>
+                    <button type="button" onclick="resultSubmit()" class="result-btn p-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" data-result="win,lose,lose">勝 負 負</button>
                 </div>
-              </div>
+            </div>
 
               <div>
                 <label
@@ -426,6 +403,73 @@ export const Top = (props: {
               .getElementById(currentField + "Placeholder")
               .classList.add("hidden");
             closeModal();
+          }
+
+          const resultSubmit = () =>{
+            // クリックされたボタンの data-result 属性の値を取得
+            const result = event.target.getAttribute('data-result');
+
+            // result の値を分割して、round1 ~ round3 に代入
+            const [round1, round2, round3] = result.split(',');
+            // round1 ~ round3 の hidden input 要素を取得
+            const round1Input = document.getElementById('round1');
+            const round2Input = document.getElementById('round2');
+            const round3Input = document.getElementById('round3');
+
+            // それぞれの input 要素に値をセット
+            round1Input.value = round1;
+            round2Input.value = round2;
+            if(round3){
+              round3Input.value = round3;
+            }else{
+              round3Input.value = "";
+            }
+            // キャラクターが選択されているかチェック
+            const player1CharacterInput = document.querySelector('#player1Character');
+            const player2CharacterInput = document.querySelector('#player2Character');
+
+            // プレイヤー名が入力されているかチェック
+            const player1NameContainer = document.querySelector('#player1NameContainer');
+            const player1NameInput = document.querySelector('#player1Name');
+            const player2NameContainer = document.querySelector('#player2NameContainer');
+            const player2NameInput = document.querySelector('#player2Name');
+
+            let hasError = false;
+            if (player1CharacterInput.value.trim() === '') {
+              // キャラクターが選択されていない場合
+              player1CharacterInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500'); // エラー時の外枠スタイル
+              hasError = true;
+            }else{
+              player1CharacterInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            }
+            if (player2CharacterInput.value.trim() === '') {
+              // キャラクターが選択されていない場合
+              player2CharacterInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500'); // エラー時の外枠スタイル
+              hasError = true;
+            }else{
+              player2CharacterInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            }
+
+            // プレイヤー名の入力チェック
+            if (!player1NameContainer.classList.contains('hidden') && player1NameInput.value.trim() === '') {
+              player1NameInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+              hasError = true;
+            } else {
+              player1NameInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            }
+
+            if (!player2NameContainer.classList.contains('hidden') && player2NameInput.value.trim() === '') {
+              player2NameInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+              hasError = true;
+            } else {
+              player2NameInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            }
+
+            if(hasError){
+              return;
+            }
+            document.getElementById("resultForm").submit()
+
           }
 
           // フォーム送信時の処理
@@ -588,17 +632,8 @@ export const Top = (props: {
               radio.addEventListener("change", updatePlayerSide);
             });
 
-          // ラウンド1と2の選択変更を監視
-          document
-            .getElementById("round1")
-            .addEventListener("change", updateRoundResults);
-          document
-            .getElementById("round2")
-            .addEventListener("change", updateRoundResults);
-
           // 初期化時にも実行
           updatePlayerSide();
-          updateRoundResults();
           init = false;
         </script>
       </body>
