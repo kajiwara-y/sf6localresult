@@ -1,8 +1,8 @@
 import { html } from "hono/html";
-import { WinRate as winRateResult } from "../../types"
+import { WinRate as winRateResult } from "../../types";
 
 export const WinRate = (props: {
-  winRateArray: winRateResult[] | undefined
+  winRateArray: winRateResult[] | undefined;
 }) => {
   interface WinRateStyle {
     width: string;
@@ -12,7 +12,7 @@ export const WinRate = (props: {
       width: `${winRate}%`,
     };
   };
-  
+
   return html`<!DOCTYPE html>
     <!DOCTYPE html>
 <html lang="ja">
@@ -36,7 +36,6 @@ export const WinRate = (props: {
     </div>
     <div class="container mx-auto p-4">
       <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">キャラクター別勝率</h1>
-      
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
           <thead>
