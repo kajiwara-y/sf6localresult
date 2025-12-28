@@ -79,7 +79,7 @@ npm run deploy
 
 ## Author
 
-Yusuke Wada
+KAJIWARA Yutaka
 
 ## License
 
